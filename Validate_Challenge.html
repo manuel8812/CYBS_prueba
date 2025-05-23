@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>3DS Challenge Iframe</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    iframe {
+      width: 400px;
+      height: 600px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #444;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: 1rem;
+      font-family: monospace;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Simulación de Challenge 3DS</h2>
+    <p>Pegá el valor del <code>creq</code> y hacé clic en "Enviar Challenge"</p>
+
+    <textarea id="creqText" placeholder="Pegá aquí el valor del creq..."></textarea>
+    <br>
+    <button onclick="enviarChallenge()">Enviar Challenge</button>
+
+    <form id="challengeForm" method="POST" action="https://0merchantacsstag.cardinalcommerce.com/MerchantACSWeb/creq.jsp" target="challengeIframe">
+      <input type="hidden" name="creq" id="creqInput" />
+    </form>
+
+    <iframe name="challengeIframe" id="challengeIframe" title="Challenge 3DS"></iframe>
+    
+    <div id="status">Esperando acción...</div>
+  </div>
+
+  <script>
+    function enviarChallenge() {
+      const creq = document.getElementById("creqText").value.trim();
+      const creqInput = document.getElementById("creqInput");
+      const statusDiv = document.getElementById("status");
+
+      if (!creq) {
+        statusDiv.textContent = "Por favor, ingresá un valor válido para creq.";
+        return;
+      }
+
+      creqInput.value = creq;
+      statusDiv.textContent = "Enviando challenge al ACS...";
+      document.getElementById("challengeForm").submit();
+
+      setTimeout(() => {
+        statusDiv.textContent = "Espere la respuesta del banco en el iframe.";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
